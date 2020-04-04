@@ -55,7 +55,7 @@ def db_create_default_tables(conn):
                     DateTime text,
                     Temp real,
                     TempMax real,
-                    TemMin real 
+                    TempMin real 
             );"""
             cur.execute(sql_create_table_current_weather)
     print("New table was created.")
