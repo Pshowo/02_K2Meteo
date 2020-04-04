@@ -40,10 +40,10 @@ Project is: _in progress_
 
 Todo:
  - [ ] Main Branch
-    - [ ] SQLite
+    - [x] SQLite
         - [x] Create database
-        - [ ] Add data do database
-        - [ ] Read max value from database
+        - [x] Add data do database
+        - [x] Read max value from database
     - [ ] OpenWeatherMap
         - [ ] Recording current weather data   
         - [ ] Recording forecast 
