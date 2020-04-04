@@ -47,7 +47,7 @@ WODZISLAW = {"lat": "51.51", "lon": "-0.13"}
 API = 'bc5101724fad77046c340e3c4706f87d'
 
 weather_url = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&units=metric&appid={}".format(
-    WODZISLAW['lat'], WODZISLAW['lon'], API)
+    K2_CORD['lat'], K2_CORD['lon'], API)
 forecast = 'https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&units=metric&appid={}'.format(K2_CORD['lat'],
                                                                                                          K2_CORD['lon'],
                                                                                                          API)
