@@ -41,7 +41,7 @@ Project is: _in progress_
 Todo:
  - [ ] Main Branch
     - [ ] SQLite
-        - [ ] Create database
+        - [x] Create database
         - [ ] Add data do database
         - [ ] Read max value from database
     - [ ] OpenWeatherMap
@@ -55,5 +55,16 @@ Todo:
  - [ ] Readme
     - [ ] Instruction
    
+#### Database table
+
+##### Table 1. current_weather
+
+| DataId | DateTime         | Temp | TempMin | TempMax |
+| :---:  |:---:             |:---: |:---:    |:---:    |
+| 1      | 2020-04-04 12:00 | 24.5 |  20.5   | 24.5    |
+| 2      | 2020-04-04 12:00 | 24.4 |  20.5   | 24.5    |
+| ..     | ...              | ...  |  ...    | ...     |
+   
+ 
 ## Contact
 Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com)
