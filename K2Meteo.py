@@ -8,8 +8,13 @@ from apps import sqlite_db
 import time
 import pandas as pd
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime
+import matplotlib.dates as mdates
+from matplotlib import ticker
 
-print('Welcome in K2Meteo, v0.2\n', '-'*50)
+print('Welcome in K2Meteo, v0.2\n', '-' * 50)
 
 # SQLite ================
 
@@ -33,12 +38,12 @@ def insert_temp_to_db(time_now, temp_current, temp_max, temp_min):
     sqlite_db.db_close(conn)
 
 
-if command == 'read':
-    sql_get = """ SELECT MAX(TempMax) from current_weather """
+def read_temp_db():
+    sql_get = """ SELECT DateTime, Temp, TempMax, TempMin FROM current_weather """
     conn = sqlite_db.db_connect(sqlite_db.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn)
     print("Max temperate in database is:\t{}°C".format(sql_get_max1['MAX(TempMax)'].iloc[0]))
-
+    return sql_get_max1
 # =======================
 
 # OpenWeatherMap ========
@@ -57,6 +62,7 @@ while True:
     res_forecast = requests.get(forecast)
     data_weather = res_weather.json()
     data_forecast = res_forecast.json()
+
 
     temp_current = data_weather['main']['temp']
     temp_current_max = data_weather['main']['temp_max']
@@ -86,4 +92,23 @@ for day in data_forecast['list']:
                                                                       desc_weather))
         i += 1
 
+# =======================
+df_temp = read_temp_db()
+
+# Graph =======================
+file_name = 'Temperature on K2 ' + str(time_now).replace(':', "_")
+title_font = {'style': 'italic', 'size': 'large'}
+y = df_temp['Temp'].astype(float)
+obj = df_temp['DateTime']
+
+fig, ax = plt.subplots(figsize=(10, 6), constrained_layout=True)
+ax.plot(obj, y)
+ax.set(xlabel='Date & Time', ylabel='Temperature [°C]',
+       title='Temperature on K2')
+date_format = mdates.DateFormatter('%d %H:%M')
+
+ax.xaxis.set_major_locator(ticker.MaxNLocator(6))
+plt.grid(True)
+plt.savefig(sqlite_db.SQLITE_PATH + "\\" + file_name)
+plt.show()
 # =======================

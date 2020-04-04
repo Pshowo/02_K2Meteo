@@ -48,8 +48,8 @@ Todo:
         - [x] Read current weather data and forecast
         - [x] Recording current weather data   
         - [x] Reading forecast 
-    - [ ] Graph
-        - [ ] Generate graph
+    - [x] Graph
+        - [X] Generate graph and save to file
     - [ ] UI 
         - [ ] Command structure
         - [ ] 
