@@ -10,6 +10,8 @@ import pandas as pd
 
 print('Welcome in K2Meteo, v0.1\n', '-'*50)
 
+# SQLite========
+
 # Create database if not exists
 if not os.path.exists(sqlite_db.SQLITE_FILE):
     sqlite_db.db_create(sqlite_db.DB_PATH)
@@ -40,4 +42,6 @@ elif command == 'read':
     conn = sqlite_db.db_connect(sqlite_db.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn)
     print("Max temperate in database is:\t{}°C".format(sql_get_max1['MAX(TempMax)'].iloc[0]))
+
+# ========
 
