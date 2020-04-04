@@ -66,6 +66,15 @@ Todo:
 | 2      | 2020-04-04 12:00 | 24.4 |  20.5   | 24.5    |
 | ..     | ...              | ...  |  ...    | ...     |
    
+#### Graph
+
+After each plot graph it will be saved on this path:
+      
+      K2Meteo -> Data
+ 
+Example graph:
+
+    ![](img/Graph_example.png)
  
 ## Contact
 Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com)
