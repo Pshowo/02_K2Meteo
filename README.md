@@ -44,10 +44,10 @@ Todo:
         - [x] Create database
         - [x] Add data do database
         - [x] Read max value from database
-    - [ ] OpenWeatherMap
+    - [x] OpenWeatherMap
         - [x] Read current weather data and forecast
-        - [ ] Recording current weather data   
-        - [ ] Recording forecast 
+        - [x] Recording current weather data   
+        - [x] Reading forecast 
     - [ ] Graph
         - [ ] Generate graph
     - [ ] UI 

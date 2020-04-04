@@ -37,8 +37,9 @@ def db_connect(file):
 
 # Function to commit changes and close db
 def db_close(conn):
+    cur = conn.cursor()
+    cur.execute("VACUUM;")
     conn.commit()
-    # Todo Dodać vaccum database
     conn.close()
 
 
