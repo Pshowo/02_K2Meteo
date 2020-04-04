@@ -45,6 +45,7 @@ Todo:
         - [x] Add data do database
         - [x] Read max value from database
     - [ ] OpenWeatherMap
+        - [x] Read current weather data and forecast
         - [ ] Recording current weather data   
         - [ ] Recording forecast 
     - [ ] Graph
