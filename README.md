@@ -1,9 +1,8 @@
 # Program K2-Meteo
 
 ## Recording and display current weather and forecast on K2 mountain. 
-Rejestracja i wyświetlanie pogody i prognozy pogody na K2
 
-### Description:
+### Task description:
 >Do wyprawy na K2 przygotowuje się grupa nieokrzesanych śmiałków, oczywiście jak na prawdziwych profesjonalistów przystało o sprawdzeniu pogody przypomniało im się na 3 dni przed wylotem do Islamabadu.
 >Grupa koniecznie musi monitorować aktualne dane pogodowe oraz prognozę na najbliższe 5 dni.
 >Jesteś ich ostatnią nadzieją. Musisz przygotować prosty skrypt, który spełnia następujące założenia:
@@ -38,7 +37,7 @@ Rejestracja i wyświetlanie pogody i prognozy pogody na K2
 ## Status
 Project is: _in progress_
 
-Todo:
+To do:
  - [ ] Main Branch
     - [x] SQLite
         - [x] Create database
@@ -50,9 +49,9 @@ Todo:
         - [x] Reading forecast 
     - [x] Graph
         - [X] Generate graph and save to file
-    - [ ] UI 
-        - [ ] Command structure
-        - [ ] 
+    - [x] UI 
+        - [x] Command structure
+    - [ ] Register data in Real-Time
  - [ ] Readme
     - [ ] Instruction
    

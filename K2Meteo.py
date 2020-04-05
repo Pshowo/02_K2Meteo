@@ -9,8 +9,6 @@ import time
 import pandas as pd
 import requests
 import matplotlib.pyplot as plt
-import numpy as np
-import datetime
 import matplotlib.dates as mdates
 from matplotlib import ticker
 
@@ -30,34 +28,132 @@ def read_temp_db():
     return sql_get_max1
 
 
+# Max value =======================
 def read_max_temp_db():
     sql_get = """ SELECT MAX(TempMax) from current_weather """
     conn = sqlite_db.db_connect(sqlite_db.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn)
     sqlite_db.db_close(conn)
-    print('-' * 50, '\nMax temperature  in K2:')
-    print("Max temperate in database is:\t{}°C".format(sql_get_max1['MAX(TempMax)'].iloc[0]))
+    print('-' * 50)
+    print("  Max temperate in database is:\t{}°C".format(sql_get_max1['MAX(TempMax)'].iloc[0]))
 
 
-# Forecast weather
+# Current weather =======================
+def print_weather(weather_url):
+    time_now = str(time.ctime(time.time()))
+    res_weather = requests.get(weather_url)
+    data_weather = res_weather.json()
+
+    temp_current = data_weather['main']['temp']
+    temp_current_max = data_weather['main']['temp_max']
+    temp_current_min = data_weather['main']['temp_min']
+    desc_current = data_weather['weather'][0]['main']
+
+    # Print current weather
+    print('-' * 50, '\n   Current temperature on K2: {}\t'.format(time_now))
+    print('\n   Current temp:\t{}°C'.format(temp_current),
+          '\n   Max temperature:\t{}°C'.format(temp_current_max),
+          '\n   Min temperature:\t{}°C'.format(temp_current_min),
+          '\n   Actually weather:\t{}'.format(desc_current))
+
+
+# Forecast weather =======================
 def print_forecast(forecast_url):
     res_forecast = requests.get(forecast_url)
     data_forecast = res_forecast.json()
-    print('-' * 50, '\nForecast weather in the next 5 days:')
+    print('-' * 50, '\n   Forecast weather in the next 5 days:')
     i = 1
     for day in data_forecast['list']:
         hour = day['dt_txt']
         if (hour[-8:]) == '12:00:00':
             desc_weather = day['weather'][0]['main']
-            print("Day {}:\t{}, \tTemp:{}, \tForecast weather: {}".format(i, day['dt_txt'], day['main']['temp'], desc_weather))
+            print("   Day {}:\t{}, \tTemp:{}, \tForecast weather: {}".format(i, day['dt_txt'], day['main']['temp'], desc_weather))
             i += 1
 
 
-print('*' * 50)
-print('Welcome in K2Meteo, v0.3')
-print('*' * 50)
+# Plot Graph =======================
+def graph_plot():
+    df_temp = read_temp_db()
+    file_name = 'Temperature on K2 ' + str(time_now).replace(':', "_")
+    title_font = {'style': 'italic', 'size': 'large'}
+    y = df_temp['Temp'].astype(float)
+    obj = df_temp['DateTime']
+
+    fig, ax = plt.subplots(figsize=(10, 6), constrained_layout=True)
+    ax.plot(obj, y)
+    ax.set(xlabel='Date & Time', ylabel='Temperature [°C]',
+           title='Temperature on K2')
+    date_format = mdates.DateFormatter('%d %H:%M')
+
+    ax.xaxis.set_major_locator(ticker.MaxNLocator(6))
+    plt.grid(True)
+    plt.savefig(sqlite_db.SQLITE_PATH + "\\" + file_name)
+    print('   You mast close the window with graph to continue.')
+    plt.show()
+
+
+# UI ====================
+def input_check():
+    word = input('\n  Command:')
+    word = word.lower()
+    # sprawdzenie pogody
+    if word == 'weather':
+        print_weather(weather_url)
+        return input_check()
+    elif word == 'forecast':
+        print_forecast(forecast)
+        time.sleep(1)
+        print('   It\'s look so good. You can go to climbing.')
+        time.sleep(2)
+        print("   Probably.. :)")
+        return input_check()
+    elif word == 'max':
+        read_max_temp_db()
+        return input_check()
+    elif word == 'graph':
+        graph_plot()
+        return input_check()
+    elif word == 'exit':
+        print('\n   Bye and good luck on climbing.')
+        time.sleep(2)
+        exit
+    elif word == 'help':
+        print('   You can use this command:\n',
+              '   "help" \t- Display available commands.\n',
+              '   "weather"\t- Display current temperature on K2.\n',
+              '   "forecast"\t- Display forecast weather in 5 days on K2.\n',
+              '   "max"\t- Display max registered value on database.\n',
+              '   "graph"\t- Plot graph and save picture on your disc.\n',
+              '   "exit"\t- Close program.')
+        return input_check()
+    else:
+        print("   We didn't understand your entry. Try again.")
+        return input_check()
+
 
 time_now = str(time.ctime(time.time()))
+k2 = r"""
+==============================================================================                                                                                              
+  _  _____    __  __      _             
+ | |/ /__ \  |  \/  |    | |            
+ | ' /   ) | | \  / | ___| |_ ___  ___  
+ |  <   / /  | |\/| |/ _ \ __/ _ \/ _ \ 
+ | . \ / /_  | |  | |  __/ ||  __/ (_) |
+ |_|\_\____| |_|  |_|\___|\__\___|\___/ 
+                      _
+                     /#\\
+                    /###\     /\\
+                   /  ###\   /##\  /\\
+                  /      #\ /####\/##\\
+                 /  /      /   # /  ##\             _       /\\
+               // //  /\  /    _/  /  #\ _         /#\    _/##\    /\\
+              // /   /  \     /   /    #\ \      _/###\_ /   ##\__/ _\\
+             /  \   / .. \   / /   _   { \ \   _/       / //    /    \\
+     /\     /    /\  ...  \_/   / / \   } \ | /  /\  \ /  _    /  /    \ /\\
+/...\.../..:.\. ..:::::::..:..... . ...\{:... / %... \\/..%. \  /./:..\__   \\
+..:..\:..:::....:::;;;;;;::::::::.:::::.\}.....::%.:. \ .:::. \/.%:::.:..\\;::
+==============================================================================
+"""
 
 # SQLite ================
 # Create database if not exists
@@ -88,39 +184,8 @@ temp_current_max = data_weather['main']['temp_max']
 temp_current_min = data_weather['main']['temp_min']
 desc_current = data_weather['weather'][0]['main']
 
-# Print current weather
-print('-' * 50, '\nCurrent temperature in K2:')
-print('Time:\t\t\t\t{}'.format(time_now),
-      '\nCurrent temp:\t\t{}°C'.format(temp_current),
-      '\nMax temperature:\t{}°C'.format(temp_current_max),
-      '\nMin temperature:\t{}°C'.format(temp_current_min),
-      '\nActually weather:\t{}'.format(desc_current))
 
-# Print forecast weather
-print_forecast(forecast)
-
-# Print max temperature from database
-read_max_temp_db()
-
-# Plot Graph =======================
-df_temp = read_temp_db()
-file_name = 'Temperature on K2 ' + str(time_now).replace(':', "_")
-title_font = {'style': 'italic', 'size': 'large'}
-y = df_temp['Temp'].astype(float)
-obj = df_temp['DateTime']
-
-fig, ax = plt.subplots(figsize=(10, 6), constrained_layout=True)
-ax.plot(obj, y)
-ax.set(xlabel='Date & Time', ylabel='Temperature [°C]',
-       title='Temperature on K2')
-date_format = mdates.DateFormatter('%d %H:%M')
-
-ax.xaxis.set_major_locator(ticker.MaxNLocator(6))
-plt.grid(True)
-plt.savefig(sqlite_db.SQLITE_PATH + "\\" + file_name)
-plt.show()
-
-
+'''
 # Recording data ========
 print("Recording data in process...")
 while True:
@@ -141,3 +206,12 @@ while True:
     #       '\nMax temperature:\t{}°C'.format(temp_current_max),
     #       '\nMin temperature:\t{}°C'.format(temp_current_min),)
     time.sleep(60)
+'''
+
+print(k2)
+print('   Welcome in K2-Meteo, v1.0')
+print('   In this program you can use this command: "help", "weather", "forecast", "max", "graph" and "exit" ')
+print('  "If you forget the commands, write \"help\" in Command line."')
+
+input_check()
+
