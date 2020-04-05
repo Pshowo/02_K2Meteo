@@ -51,7 +51,7 @@ To do:
         - [X] Generate graph and save to file
     - [x] UI 
         - [x] Command structure
-    - [ ] Register data in Real-Time
+    - [x] Register data in Real-Time
  - [ ] Readme
     - [ ] Instruction
    
@@ -73,7 +73,7 @@ After each plot graph it will be saved on this path:
  
 Example graph:
 
-    ![](img/Graph_example.png)
+![](img/Graph_example.png)
  
 ## Contact
 Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com)

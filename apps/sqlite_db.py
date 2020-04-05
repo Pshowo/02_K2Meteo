@@ -5,10 +5,11 @@ Set of function to SQLite
 """
 import sqlite3
 from sqlite3 import Error
+import os
 
+SQLITE_PATH = os.getcwd() + r'\Data'
 SQLITE_FILE = 'k2_db.db'
-SQLITE_PATH = r'D:\Python\08_K2Meteo\K2Meteo\Data'
-DB_PATH = SQLITE_PATH + '/' + SQLITE_FILE
+DB_PATH = SQLITE_PATH + '\\' + SQLITE_FILE
 
 
 # Function to create database file
