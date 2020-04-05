@@ -5,11 +5,6 @@ Set of function to SQLite
 """
 import sqlite3
 from sqlite3 import Error
-import os
-
-SQLITE_PATH = os.getcwd() + r'\Data'
-SQLITE_FILE = 'k2_db.db'
-DB_PATH = SQLITE_PATH + '\\' + SQLITE_FILE
 
 
 # Function to create database file

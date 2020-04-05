@@ -11,18 +11,19 @@ import requests
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 import multiprocessing
+import settings
 
 
 def insert_temp_to_db(current_time, temp, temp_max, temp_min):
     insert_weather = (current_time, temp, temp_max, temp_min)
-    conn_db = sqlite_db.db_connect(sqlite_db.DB_PATH)
+    conn_db = sqlite_db.db_connect(settings.DB_PATH)
     sqlite_db.db_insert_current_weather(conn_db, insert_weather)
     sqlite_db.db_close(conn_db)
 
 
 def read_temp_db():
     sql_get = """ SELECT DateTime, Temp, TempMax, TempMin FROM current_weather """
-    conn_db = sqlite_db.db_connect(sqlite_db.DB_PATH)
+    conn_db = sqlite_db.db_connect(settings.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn_db)
     sqlite_db.db_close(conn_db)
     return sql_get_max1
@@ -31,7 +32,7 @@ def read_temp_db():
 # Max value =======================
 def read_max_temp_db():
     sql_get = """ SELECT MAX(TempMax) from current_weather """
-    conn_db = sqlite_db.db_connect(sqlite_db.DB_PATH)
+    conn_db = sqlite_db.db_connect(settings.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn_db)
     sqlite_db.db_close(conn_db)
     print('-' * 50)
@@ -85,7 +86,7 @@ def graph_plot():
 
     ax.xaxis.set_major_locator(ticker.MaxNLocator(6))
     plt.grid(True)
-    plt.savefig(sqlite_db.SQLITE_PATH + "\\" + file_name)
+    plt.savefig(settings.SQLITE_PATH + "\\" + file_name)
     print('   You mast close the window with graph to continue.')
     plt.show()
 
@@ -170,24 +171,23 @@ k2 = r"""
 
 # SQLite ================
 # Create database if not exists
-if not os.path.exists(sqlite_db.DB_PATH):
-    sqlite_db.db_create(sqlite_db.DB_PATH)
-    conn = sqlite_db.db_connect(sqlite_db.DB_PATH)
+if not os.path.exists(settings.DB_PATH):
+    sqlite_db.db_create(settings.DB_PATH)
+    conn = sqlite_db.db_connect(settings.DB_PATH)
     sqlite_db.db_create_default_tables(conn)
     sqlite_db.db_close(conn)
 
 # Vaccum db
-conn = sqlite_db.db_connect(sqlite_db.DB_PATH)
+conn = sqlite_db.db_connect(settings.DB_PATH)
 sqlite_db.db_vaccum(conn)
 sqlite_db.db_close(conn)
 
 # OpenWeatherMap ========
-K2_CORD = {"lat": "35.88", "lon": "76.51"}
-WODZISLAW = {"lat": "51.51", "lon": "-0.13"}
-API = 'bc5101724fad77046c340e3c4706f87d'
 
-weather = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&units=metric&appid={}".format(K2_CORD['lat'], K2_CORD['lon'], API)
-forecast = 'https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&units=metric&appid={}'.format(K2_CORD['lat'], K2_CORD['lon'], API)
+weather = "https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&units=metric&appid={}" \
+          "".format(settings.K2_CORD['lat'], settings.K2_CORD['lon'], settings.API)
+forecast = 'https://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&units=metric&appid={}' \
+           ''.format(settings.K2_CORD['lat'], settings.K2_CORD['lon'], settings.API)
 time_now = str(time.ctime(time.time()))
 res_weather = requests.get(weather)
 data_weather = res_weather.json()
