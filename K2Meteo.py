@@ -1,6 +1,6 @@
 """
 Created on Apr 2020
-MainProgram K2Meteo
+MainProgram K2-Meteo
 @author: PawełJ
 """
 import os
@@ -75,7 +75,6 @@ def print_forecast(forecast_url):
 def graph_plot():
     df_temp = read_temp_db()
     file_name = 'Temperature on K2 ' + str(time_now).replace(':', "_")
-    title_font = {'style': 'italic', 'size': 'large'}
     y = df_temp['Temp'].astype(float)
     obj = df_temp['DateTime']
 
@@ -83,13 +82,34 @@ def graph_plot():
     ax.plot(obj, y)
     ax.set(xlabel='Date & Time', ylabel='Temperature [°C]',
            title='Temperature on K2')
-    date_format = mdates.DateFormatter('%d %H:%M')
 
     ax.xaxis.set_major_locator(ticker.MaxNLocator(6))
     plt.grid(True)
     plt.savefig(sqlite_db.SQLITE_PATH + "\\" + file_name)
     print('   You mast close the window with graph to continue.')
     plt.show()
+
+
+# Recording data =======================
+def recording_data():
+    print("Recording data in process...")
+    while True:
+        time_now = str(time.ctime(time.time()))
+        res_weather = requests.get(weather_url)
+        data_weather = res_weather.json()
+
+        temp_current = data_weather['main']['temp']
+        temp_current_max = data_weather['main']['temp_max']
+        temp_current_min = data_weather['main']['temp_min']
+
+        insert_temp_to_db(time_now, temp_current, temp_current_max, temp_current_min)
+        print('-'*25,
+              '\nWrite Time:\t\t\t\t{}'.format(time_now),
+              '\nCurrent temp:\t\t{}°C'.format(temp_current),
+              '\nMax temperature:\t{}°C'.format(temp_current_max),
+              '\nMin temperature:\t{}°C'.format(temp_current_min),
+              '\nWait 1 mintue to get next vaules. If you want to stopped recording press Ctrl+C')
+        time.sleep(60)
 
 
 # UI ====================
@@ -104,8 +124,9 @@ def input_check():
         print_forecast(forecast)
         time.sleep(1)
         print('   It\'s look so good. You can go to climbing.')
-        time.sleep(2)
+        time.sleep(1)
         print("   Probably.. :)")
+        time.sleep(1)
         return input_check()
     elif word == 'max':
         read_max_temp_db()
@@ -113,17 +134,21 @@ def input_check():
     elif word == 'graph':
         graph_plot()
         return input_check()
+    elif word == 'record':
+        recording_data()
     elif word == 'exit':
         print('\n   Bye and good luck on climbing.')
         time.sleep(2)
         exit
     elif word == 'help':
-        print('   You can use this command:\n',
+        print('-' * 50,
+              '   \nYou can use this command:\n',
               '   "help" \t- Display available commands.\n',
               '   "weather"\t- Display current temperature on K2.\n',
               '   "forecast"\t- Display forecast weather in 5 days on K2.\n',
               '   "max"\t- Display max registered value on database.\n',
               '   "graph"\t- Plot graph and save picture on your disc.\n',
+              '   "record"\t- Run to recording data in real time.'
               '   "exit"\t- Close program.')
         return input_check()
     else:
@@ -186,31 +211,12 @@ desc_current = data_weather['weather'][0]['main']
 
 
 '''
-# Recording data ========
-print("Recording data in process...")
-while True:
-    time_now = str(time.ctime(time.time()))
-    res_weather = requests.get(weather_url)
-    res_forecast = requests.get(forecast)
-    data_weather = res_weather.json()
-    data_forecast = res_forecast.json()
 
-    temp_current = data_weather['main']['temp']
-    temp_current_max = data_weather['main']['temp_max']
-    temp_current_min = data_weather['main']['temp_min']
-    desc_current = data_weather['weather'][0]['main']
-
-    insert_temp_to_db(time_now, temp_current, temp_current_max, temp_current_min)
-    # print('Write Time:\t\t\t\t{}'.format(time_now),
-    #       '\nCurrent temp:\t\t{}°C'.format(temp_current),
-    #       '\nMax temperature:\t{}°C'.format(temp_current_max),
-    #       '\nMin temperature:\t{}°C'.format(temp_current_min),)
-    time.sleep(60)
 '''
 
 print(k2)
 print('   Welcome in K2-Meteo, v1.0')
-print('   In this program you can use this command: "help", "weather", "forecast", "max", "graph" and "exit" ')
+print('   In this program you can use this command: "help", "weather", "forecast", "max", "graph", "record" and "exit" ')
 print('  "If you forget the commands, write \"help\" in Command line."')
 
 input_check()
