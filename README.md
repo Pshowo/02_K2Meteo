@@ -25,20 +25,52 @@
 >
 ## Table of contents
 
-2. [Technologies](#technologies)
-4. [Status](#status)
-5. [Contact](#contact)
+1. [Technologies](#technologies)
+2. [Installation](#installation)
+3. [Running](#running)
+4. [Program instruction](#instruction)
+2. [Status](#status)
+3. [Contact](#contact)
 
 ## Technologies
 
 - Python v3.7
 - SQLite
+- OpenWeatherMap
+
+## Instalation
+
+To start this program you need to have installed python. If you don't have it, go to Python [download](https://www.python.org/downloads/) section and install it.
+Next step run "Command Prompt" on your system and go to folder with this project and use command:
+
+    pip install -r requirements.txt
+
+It's done
+
+## Running
+First you go to [Installation](#installation) section. Subsequently go to folder with this project and double click to `K2Meteo.py` or 
+run "Command Prompt" on your system and go to folder with this project and use command:
+
+    pytohn K2Meteo.py
+    
+
+## Instruction
+
+Program used to display and register data from externally weather data source. After running program in background is recording data each one minute. Data is recorded to local database.
+In program you can use a few command, it's:
+
+ - _help_ - Display available commands and purpose.
+ - _weather_ - Display current temperature on K2.
+ - _forecast_ - Display forecast weather in 5 days on K2.
+ - _max_ - Display max registered value on database.
+ - _graph_ - Plot graph and save picture on your disc.
+ - _exit_ - Close program.
 
 ## Status
-Project is: _in progress_
+Project is: _done_ 5-04-2020
 
 To do:
- - [ ] Main Branch
+ - [x] Main Branch
     - [x] SQLite
         - [x] Create database
         - [x] Add data do database
@@ -52,8 +84,8 @@ To do:
     - [x] UI 
         - [x] Command structure
     - [x] Register data in Real-Time
- - [ ] Readme
-    - [ ] Instruction
+ - [x] Readme
+    - [x] Instruction
    
 #### Database table
 
@@ -76,4 +108,4 @@ Example graph:
 ![](img/Graph_example.png)
  
 ## Contact
-Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com)
+Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com?subject=K2-Meteo Program)
