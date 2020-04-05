@@ -108,4 +108,4 @@ Example graph:
 ![](img/Graph_example.png)
  
 ## Contact
-Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com?subject=K2-Meteo Program)
+Created by [pjuszcze@gmail.com](mailto:pjuszcze@gmail.com)
