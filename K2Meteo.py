@@ -31,12 +31,14 @@ def read_temp_db():
 
 # Max value =======================
 def read_max_temp_db():
-    sql_get = """ SELECT MAX(TempMax) from current_weather """
+    sql_get = """ SELECT MAX(Temp), MIN(Temp), AVG(Temp) from current_weather """
     conn_db = sqlite_db.db_connect(settings.DB_PATH)
     sql_get_max1 = pd.read_sql_query(sql_get, conn_db)
     sqlite_db.db_close(conn_db)
     print('-' * 50)
-    print("  Max temperate in database is:\t{}°C".format(sql_get_max1['MAX(TempMax)'].iloc[0]))
+    print("  Max temperate in database is:\t{:.2f}°C".format(sql_get_max1['MAX(Temp)'].iloc[0]))
+    print("  Min temperate in database is:\t{:.2f}°C".format(sql_get_max1['MIN(Temp)'].iloc[0]))
+    print("  Avg temperate in database is:\t{:.2f}°C".format(sql_get_max1['AVG(Temp)'].iloc[0]))
 
 
 # Current weather =======================
@@ -136,7 +138,7 @@ def input_check():
               '   "help" \t- Display available commands.\n',
               '   "weather"\t- Display current temperature on K2.\n',
               '   "forecast"\t- Display forecast weather in 5 days on K2.\n',
-              '   "max"\t- Display max registered value on database.\n',
+              '   "max"\t- Display max, min and avg registered value on database.\n',
               '   "graph"\t- Plot graph and save picture on your disc.\n',
               '   "exit"\t- Close program.')
         return input_check()

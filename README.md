@@ -62,7 +62,7 @@ In program you can use a few command, it's:
  - _help_ - Display available commands and purpose.
  - _weather_ - Display current temperature on K2.
  - _forecast_ - Display forecast weather in 5 days on K2.
- - _max_ - Display max registered value on database.
+ - _max_ - Display max, min, avg registered value on database.
  - _graph_ - Plot graph and save picture on your disc.
  - _exit_ - Close program.
 
